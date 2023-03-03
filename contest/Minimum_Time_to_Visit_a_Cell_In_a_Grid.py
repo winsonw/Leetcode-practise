@@ -1,3 +1,4 @@
+from heapq import heappush, heappop
 class Solution:
     def minimumTime(self, grid: List[List[int]]) -> int:
         # [print(line) for line in grid]  
@@ -7,12 +8,13 @@ class Solution:
         visited = [[-1]* n for i in range(m)] 
         visited[0][0] = 0
         
-        openList = [[0,0]]
+        openList = []
+        heappush(openList, (0, [0,0]))
         
         
         while openList:
-            cord = openList.pop(0)
-            t = visited[cord[0]][cord[1]] + 1
+            t, cord = heappop(openList)
+            t += 1
             for dirs in [[1, 0], [-1, 0], [0, 1], [0, -1]]:
                 x, y  = cord[0] + dirs[0], cord[1] + dirs[1]
                 # print(x,y)
@@ -23,7 +25,7 @@ class Solution:
                         
                     if visited[x][y] == -1 or visited[x][y] > arrive:
                         visited[x][y] = arrive
-                        openList.append([x,y])
+                        heappush(openList, (arrive, [x,y]))
                         # [print(line) for line in visited]
                         # print(openList)
                         
